@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StudentAdminPortal.API.DataModels;
+using StudentAdminPortal.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,7 @@ builder.Services.AddSwaggerGen();
 string ConnectionStr = "Data Source= (localdb)\\Local; Initial Catalog=StudentAdminPortal; Integrated Security=True; TrustServerCertificate=True;";
 builder.Services.AddDbContext<StudentAdminContext>(options => options.UseSqlServer(ConnectionStr));
 
-
+builder.Services.AddScoped<IStudentRepository, SqlStudentRepository>(); 
 
 var app = builder.Build();
 

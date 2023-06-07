@@ -14,7 +14,8 @@ builder.Services.AddSwaggerGen();
 string ConnectionStr = "Data Source= (localdb)\\Local; Initial Catalog=StudentAdminPortal; Integrated Security=True; TrustServerCertificate=True;";
 builder.Services.AddDbContext<StudentAdminContext>(options => options.UseSqlServer(ConnectionStr));
 
-builder.Services.AddScoped<IStudentRepository, SqlStudentRepository>(); 
+builder.Services.AddScoped<IStudentRepository, SqlStudentRepository>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
@@ -24,6 +25,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 
 app.UseHttpsRedirection();
 

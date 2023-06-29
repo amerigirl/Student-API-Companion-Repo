@@ -34,7 +34,7 @@ namespace StudentAdminPortal.API.Controllers
 
         {
             //fetch student details
-            var student = await studentRepository.GetStudentsAsync();
+            var student = await studentRepository.GetStudentAsync(studentId);
 
             //return student details
 

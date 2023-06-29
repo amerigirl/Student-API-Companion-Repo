@@ -15,9 +15,9 @@ namespace StudentAdminPortal.API.Repositories
         }
 
         //this needs a list, but it's NOT a list!
-        public async Task<List<Student>>GetStudentAsync(Guid studentId)
+        public async Task<Student>GetStudentAsync(Guid studentId)
         {
-           return await context.Student
+            return await context.Student
                 .Include(nameof(Gender)).Include(nameof(Address))
                 .FirstOrDefaultAsync(x => x.Id == studentId);
         }

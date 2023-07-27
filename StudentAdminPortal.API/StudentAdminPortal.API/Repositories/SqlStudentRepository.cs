@@ -14,7 +14,8 @@ namespace StudentAdminPortal.API.Repositories
             this.context = context;
         }
 
-        //this needs a list, but it's NOT a list!
+      
+
         public async Task<Student>GetStudentAsync(Guid studentId)
         {
             return await context.Student
@@ -25,6 +26,11 @@ namespace StudentAdminPortal.API.Repositories
         public async Task<List<Student>> GetStudentsAsync()
         {
             return await context.Student.Include(nameof(Gender)).Include(nameof(Address)).ToListAsync();
+        }
+
+        public async Task<List<Gender>> GetGenderAsync()
+        {
+           return await context.Gender.ToListAsync(); //because this method is async we always have to return await
         }
 
     }

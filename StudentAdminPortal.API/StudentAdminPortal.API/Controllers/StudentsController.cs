@@ -40,8 +40,8 @@ namespace StudentAdminPortal.API.Controllers
 
             if (student == null) {
                 return NotFound();
-
             }
+
             return Ok(mapper.Map<Student>(student));
         }
 

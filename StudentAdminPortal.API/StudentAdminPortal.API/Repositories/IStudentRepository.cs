@@ -8,7 +8,7 @@ namespace StudentAdminPortal.API.Repositories
 
         Task<Student> GetStudentAsync(Guid studentId);
 
-        Task<List<Gender>> GetGenderAsync();
+        Task<List<Gender>> GetGendersAsync();
 
     }
 }

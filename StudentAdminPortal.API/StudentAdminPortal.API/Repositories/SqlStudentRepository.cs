@@ -28,7 +28,7 @@ namespace StudentAdminPortal.API.Repositories
             return await context.Student.Include(nameof(Gender)).Include(nameof(Address)).ToListAsync();
         }
 
-        public async Task<List<Gender>> GetGenderAsync()
+        public async Task<List<Gender>> GetGendersAsync()
         {
            return await context.Gender.ToListAsync(); //because this method is async we always have to return await
         }

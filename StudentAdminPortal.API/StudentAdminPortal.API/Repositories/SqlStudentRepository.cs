@@ -33,5 +33,14 @@ namespace StudentAdminPortal.API.Repositories
            return await context.Gender.ToListAsync(); //because this method is async we always have to return await
         }
 
+        public async Task<bool> Exists(Guid studentId)
+        {
+          return await context.Student.AnyAsync(x => x.Id == studentId);
+        }
+
+        public Task<Student> UpdateStudent(Guid studentId, Student request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

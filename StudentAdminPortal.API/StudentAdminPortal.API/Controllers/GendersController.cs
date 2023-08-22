@@ -17,8 +17,6 @@ namespace StudentAdminPortal.API.DataModels
         }
 
 
-
-
         [HttpGet]
         [Route("[controller]")]
         public async Task<IActionResult> GetAllGenders()

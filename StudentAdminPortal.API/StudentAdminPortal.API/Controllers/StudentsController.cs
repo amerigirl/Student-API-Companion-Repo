@@ -19,12 +19,12 @@ namespace StudentAdminPortal.API.Controllers
 
         [HttpGet]
         [Route("[controller]")]
-        public async Task<IActionResult> GetAllStudentsAsync() 
+        public async Task<IActionResult> GetAllStudentsAsync()
         {
             var students = await studentRepository.GetStudentsAsync();
 
             return Ok(mapper.Map<List<Student>>(students));
-      
+
         }
 
         [HttpGet]
@@ -38,12 +38,33 @@ namespace StudentAdminPortal.API.Controllers
 
             //return student details
 
-            if (student == null) {
+            if (student == null)
+            {
                 return NotFound();
             }
 
             return Ok(mapper.Map<Student>(student));
         }
 
+        [HttpPut]
+        [Route("[controller]/{studentId: guid}")]
+        public async Task<IActionResult> UpdateStudentAsync([FromRoute] Guid studentId, [FromBody] DomainModels.UpdateStudentRequest request)
+        {
+            if (await studentRepository.Exists(studentId))
+            {
+
+                //update details
+
+                var updatedStudent = await studentRepository.UpdateStudent(studentId, mapper.Map<DataModels.Student>(request));
+
+                if (updatedStudent != null)
+                {
+                    return Ok(mapper.Map<DomainModels.Student>(updatedStudent));
+                }
+
+            }
+            return NotFound();
+
+        }
     }
 }

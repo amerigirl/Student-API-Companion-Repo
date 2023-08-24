@@ -14,8 +14,6 @@ namespace StudentAdminPortal.API.Repositories
             this.context = context;
         }
 
-      
-
         public async Task<Student>GetStudentAsync(Guid studentId)
         {
             return await context.Student
@@ -35,12 +33,29 @@ namespace StudentAdminPortal.API.Repositories
 
         public async Task<bool> Exists(Guid studentId)
         {
-          return await context.Student.AnyAsync(x => x.Id == studentId);
+          return await context.Student.AnyAsync(x => x.Id == studentId); //sets the id to the studentid
         }
 
-        public Task<Student> UpdateStudent(Guid studentId, Student request)
+        public async Task<Student> UpdateStudent(Guid studentId, Student request)
         {
-            throw new NotImplementedException();
+            var existingStudent = await GetStudentAsync(studentId);
+            if (existingStudent != null)
+            {
+                existingStudent.FirstName = request.FirstName;
+                existingStudent.LastName = request.LastName;
+                existingStudent.DateOfBirth = request.DateOfBirth;
+                existingStudent.Email = request.Email;
+                existingStudent.Mobile = request.Mobile;
+                existingStudent.GenderId = request.GenderId;
+                existingStudent.Address.PhysicalAddress = request.Address.PhysicalAddress;
+                existingStudent.Address.PostalAddress = request.Address.PostalAddress;
+
+                await context.SaveChangesAsync();
+                return existingStudent;
+
+            }
+
+            return null;
         }
     }
 }

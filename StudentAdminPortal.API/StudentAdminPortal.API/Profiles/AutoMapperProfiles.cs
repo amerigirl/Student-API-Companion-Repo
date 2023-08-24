@@ -1,4 +1,5 @@
 ﻿using StudentAdminPortal.API.DomainModels;
+using StudentAdminPortal.API.Profiles.AfterMaps;
 using DataModels = StudentAdminPortal.API.DataModels;
 
 namespace StudentAdminPortal.API.Profiles
@@ -16,9 +17,8 @@ namespace StudentAdminPortal.API.Profiles
             CreateMap<DataModels.Address, Address>()
                 .ReverseMap();
 
-            CreateMap<UpdateStudentRequest, DataModels.Student>()
-                .ForMember(dest => dest.Address.PhysicalAddress, opt => opt.MapFrom(src => src.PhysicalAddress))
-                .ForMember(dest => dest.Address.PostalAddress, opt => opt.MapFrom(src => src.PostalAddress));
+            CreateMap<UpdateStudentRequest, DataModels.Student>() //you have to create an aftermap
+               .AfterMap<UpdateStudentRequestAfterMap>();
 
         }
 

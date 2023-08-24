@@ -47,15 +47,15 @@ namespace StudentAdminPortal.API.Controllers
         }
 
         [HttpPut]
-        [Route("[controller]/{studentId: guid}")]
-        public async Task<IActionResult> UpdateStudentAsync([FromRoute] Guid studentId, [FromBody] DomainModels.UpdateStudentRequest request)
+        [Route("[controller]/{studentId:guid}")] 
+        public async Task<IActionResult> UpdateStudentAsync([FromRoute] Guid studentId, [FromBody] DomainModels.UpdateStudentRequest request) //Update student is a specific model
         {
             if (await studentRepository.Exists(studentId))
             {
 
                 //update details
 
-                var updatedStudent = await studentRepository.UpdateStudent(studentId, mapper.Map<DataModels.Student>(request));
+                var updatedStudent = await studentRepository.UpdateStudent(studentId, mapper.Map<DataModels.Student>(request)); //maps the request to the data models.student
 
                 if (updatedStudent != null)
                 {

@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentAdminPortal.API.DataModels;
-using System.Linq.Expressions;
-using System.Collections.Generic;
 
 namespace StudentAdminPortal.API.Repositories
 {
@@ -33,10 +31,10 @@ namespace StudentAdminPortal.API.Repositories
 
         public async Task<bool> Exists(Guid studentId)
         {
-          return await context.Student.AnyAsync(x => x.Id == studentId); //sets the id to the studentid
+            return await context.Student.AnyAsync(x => x.Id == studentId); //sets the id to the studentid
         }
 
-        public async Task<Student> UpdateStudent(Guid studentId, Student request)
+        public async Task<Student?> UpdateStudent(Guid studentId, Student request)
         {
             var existingStudent = await GetStudentAsync(studentId);
             if (existingStudent != null)
@@ -46,8 +44,10 @@ namespace StudentAdminPortal.API.Repositories
                 existingStudent.DateOfBirth = request.DateOfBirth;
                 existingStudent.Email = request.Email;
                 existingStudent.Mobile = request.Mobile;
-                existingStudent.GenderId = request.GenderId;
+               // existingStudent.GenderId = request.GenderId;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 existingStudent.Address.PhysicalAddress = request.Address.PhysicalAddress;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 existingStudent.Address.PostalAddress = request.Address.PostalAddress;
 
                 await context.SaveChangesAsync();
@@ -58,15 +58,15 @@ namespace StudentAdminPortal.API.Repositories
             return null;
         }
 
-        public async Task<Student> DeleteStudent(Guid studentId)
+         async Task<Student> IStudentRepository.DeleteStudent(Guid studentId)
         {
             var student = await GetStudentAsync(studentId);
 
             if (student != null)
-            { 
-                context.Student.Remove(student);
+            {
+                var removeStudent = context.Student?.Remove(student);
                 await context.SaveChangesAsync();
-                return student;
+              
             }
 
             return null;

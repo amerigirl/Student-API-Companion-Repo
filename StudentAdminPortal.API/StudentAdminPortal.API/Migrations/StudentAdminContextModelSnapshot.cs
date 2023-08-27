@@ -17,7 +17,7 @@ namespace StudentAdminPortal.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -29,20 +29,19 @@ namespace StudentAdminPortal.API.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PhysicalAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("StudentId")
+                    b.Property<Guid?>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[StudentId] IS NOT NULL");
 
                     b.ToTable("Address");
                 });
@@ -54,7 +53,6 @@ namespace StudentAdminPortal.API.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -68,29 +66,25 @@ namespace StudentAdminPortal.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("GenderId")
+                    b.Property<Guid?>("GenderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("Mobile")
+                    b.Property<long?>("Mobile")
                         .HasColumnType("bigint");
 
                     b.Property<string>("ProfileImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -104,26 +98,21 @@ namespace StudentAdminPortal.API.Migrations
                 {
                     b.HasOne("StudentAdminPortal.API.DataModels.Student", null)
                         .WithOne("Address")
-                        .HasForeignKey("StudentAdminPortal.API.DataModels.Address", "StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentAdminPortal.API.DataModels.Address", "StudentId");
                 });
 
             modelBuilder.Entity("StudentAdminPortal.API.DataModels.Student", b =>
                 {
                     b.HasOne("StudentAdminPortal.API.DataModels.Gender", "Gender")
                         .WithMany()
-                        .HasForeignKey("GenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GenderId");
 
                     b.Navigation("Gender");
                 });
 
             modelBuilder.Entity("StudentAdminPortal.API.DataModels.Student", b =>
                 {
-                    b.Navigation("Address")
-                        .IsRequired();
+                    b.Navigation("Address");
                 });
 #pragma warning restore 612, 618
         }

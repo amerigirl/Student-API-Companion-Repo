@@ -8,7 +8,7 @@
 
         //Navigation Property
 
-        public Guid? StudentId { get; set; }
+        public Guid StudentId { get; set; }
 
     }
 }

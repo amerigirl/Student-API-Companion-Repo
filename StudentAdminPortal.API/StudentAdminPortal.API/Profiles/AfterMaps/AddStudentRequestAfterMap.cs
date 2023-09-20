@@ -6,6 +6,7 @@ namespace StudentAdminPortal.API.Profiles.AfterMaps
 {
     public class AddStudentRequestAfterMap : IMappingAction<AddStudentRequest, DataModels.Student>
     {
+        //allows for custom logic after the mapping is complete
           public void Process(AddStudentRequest source, DataModels.Student destination, ResolutionContext context)
         {
             destination.Id = Guid.NewGuid();

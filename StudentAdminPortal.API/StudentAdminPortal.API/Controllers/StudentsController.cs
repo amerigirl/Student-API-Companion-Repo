@@ -11,11 +11,13 @@ namespace StudentAdminPortal.API.Controllers
     {
         private readonly IStudentRepository studentRepository;
         private readonly IMapper mapper;
+        private readonly IImageRepository imageRepository;
 
-        public StudentsController(IStudentRepository studentRepository, IMapper mapper)
+        public StudentsController(IStudentRepository studentRepository, IMapper mapper, IImageRepository imageRepository) //added image repo to grab pics
         {
             this.studentRepository = studentRepository;
             this.mapper = mapper;
+            this.imageRepository = imageRepository; 
         }
 
         [HttpGet]
@@ -92,16 +94,35 @@ namespace StudentAdminPortal.API.Controllers
             return CreatedAtAction(nameof(GetStudentAsync), new { studentId = student.Id },
                 mapper.Map<DomainModels.Student>(student));
         }
+
+        [HttpPost]
+        [Route("[controller]/{studentId:guid}/upload-image")]
+
+        public async Task<IActionResult> UploadImage([FromRoute] Guid studentId, IFormFile profileImage)
+        {
+            //check if student exists
+
+            if (await studentRepository.Exists(studentId))
+            {
+                //create a new guid for the name of the file coming from the frontend
+                var fileName = Guid.NewGuid() + Path.GetExtension(profileImage.FileName);
+
+                //upload image to local storage (IImageRepo)
+                var fileImagePath = await imageRepository.Upload(profileImage, fileName);
+
+                //update the profile image path in the database in localStorageImage Repository
+                if (await studentRepository.UpdateProfileImage(studentId, fileImagePath))
+                { 
+                    return Ok(fileImagePath);    //checks if it is working
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error uploading image");
+              
+            }
+
+        return NotFound();
+        }
+
+
     }
 }
-
-
-/*if (await studentRepository.Exists(studentId))
-{
-    var student = await studentRepository.DeleteStudent(studentId);
-    return Ok(mapper.Map<DomainModels.Student>(student));
-}
-
-return NotFound();
-        } */
-       

@@ -26,6 +26,8 @@ string ConnectionStr = "Data Source= (localdb)\\Local; Initial Catalog=StudentAd
 builder.Services.AddDbContext<StudentAdminContext>(options => options.UseSqlServer(ConnectionStr));
 
 builder.Services.AddScoped<IStudentRepository, SqlStudentRepository>();
+builder.Services.AddScoped<IImageRepository, LocalStorageImageRepository>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 /*builder.Services.AddCors((options) =>

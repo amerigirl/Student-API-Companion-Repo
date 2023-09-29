@@ -1,11 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using ServiceStack.Text;
 using StudentAdminPortal.API.DataModels;
 using StudentAdminPortal.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
+// Add services to the container.
+
+builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
@@ -17,34 +21,17 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add services to the container.
-
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//connects to the database
 string ConnectionStr = "Data Source= (localdb)\\Local; Initial Catalog=StudentAdminPortal; Integrated Security=True; TrustServerCertificate=True;";
-builder.Services.AddDbContext<StudentAdminContext>(options => options.UseSqlServer(ConnectionStr));
 
+builder.Services.AddDbContext<StudentAdminContext>(options => options.UseSqlServer(ConnectionStr));
 builder.Services.AddScoped<IStudentRepository, SqlStudentRepository>();
 builder.Services.AddScoped<IImageRepository, LocalStorageImageRepository>();
-
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-/*builder.Services.AddCors((options) =>
-{
-    options.AddPolicy("angularApplication", (builder) =>
-    {
-        builder.WithOrigins("http://localhost:4200/")
-        .AllowAnyHeader()
-        .WithMethods("GET", "POST", "PUT", "DELETE")
-        .WithExposedHeaders("*");
-    });
-
-});*/
-
-
 
 var app = builder.Build();
 
@@ -55,11 +42,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
-
-
 app.UseHttpsRedirection();
 
+//get access to static files from resources folder
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(

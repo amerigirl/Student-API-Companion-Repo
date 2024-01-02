@@ -6,6 +6,7 @@ using StudentAdminPortal.API.Repositories;
 
 namespace StudentAdminPortal.API.Controllers
 {
+    //what is the flow for communication between controller, repository, and interface?
     [ApiController]
     public class StudentsController : Controller
     {
